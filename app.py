@@ -17,7 +17,6 @@ st.markdown("""
     </style>
     """, unsafe_allow_html=True)
 
-# 2. Veri Fonksiyonları
 CSV_PATH = 'data/venatura_database.csv'
 
 def load_data():
@@ -26,30 +25,43 @@ def load_data():
     return pd.DataFrame(columns=["Product_Name", "Form", "BCS_Class", "SPIP_Coeff", "Status"])
 
 def run_scraper():
-    url = "https://venatura.co/urunler/"
-    headers = {'User-Agent': 'NutriProof-Academic-Bot/1.0'}
+    # B PLANI: Daha dayanıklı bağlantı ayarları
+    url = "https://venatura.com.tr/urunlerimiz/" # Alternatif adres
+    # Gerçek bir tarayıcı gibi davranması için "User-Agent" ekliyoruz
+    headers = {
+        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36'
+    }
+    
     try:
-        response = requests.get(url, headers=headers)
+        # verify=False ekleyerek SSL sertifika hatalarını (HTTPS) geçiyoruz
+        response = requests.get(url, headers=headers, timeout=15, verify=False)
+        response.raise_for_status() # Hata varsa yakala
+        
         soup = BeautifulSoup(response.content, 'html.parser')
         products = []
-        items = soup.find_all('h2', class_='woocommerce-loop-product__title')
+        
+        # com.tr sitesindeki farklı kod yapısına (h3 veya h2) göre tarıyoruz
+        items = soup.select('h3') or soup.select('h2')
         
         for item in items:
             name = item.get_text().strip()
-            # Senin kriterlerine göre basit tahminleme
-            bcs = 1 if any(x in name for x in ["Bisglisinat", "Lipozomal", "Şelat"]) else 2
-            products.append({
-                "Product_Name": name,
-                "Form": "Auto-Scraped", 
-                "BCS_Class": bcs,
-                "SPIP_Coeff": 0.95 if bcs == 1 else 0.70,
-                "Status": "Pending Approval"
-            })
-        new_df = pd.DataFrame(products)
-        new_df.to_csv(CSV_PATH, index=False)
-        return True
+            if len(name) > 5: # Çok kısa ve anlamsız isimleri ele
+                bcs = 1 if any(x in name.lower() for x in ["bisglisinat", "lipozomal", "şelat"]) else 2
+                products.append({
+                    "Product_Name": name,
+                    "Form": "Auto-Scraped", 
+                    "BCS_Class": bcs,
+                    "SPIP_Coeff": 0.95 if bcs == 1 else 0.70,
+                    "Status": "Pending Approval"
+                })
+        
+        if products:
+            new_df = pd.DataFrame(products)
+            new_df.to_csv(CSV_PATH, index=False)
+            return True
+        return False
     except Exception as e:
-        st.error(f"Error: {e}")
+        st.sidebar.error(f"Bağlantı Hatası: {e}")
         return False
 
 # 3. Arayüz
@@ -57,9 +69,9 @@ df = load_data()
 
 st.sidebar.markdown("<h2 style='color:#FFBF00;'>NUTRIPROOF</h2>", unsafe_allow_html=True)
 if st.sidebar.button("🚀 RUN LIVE SCRAPER"):
-    with st.sidebar.status("Scanning Venatura..."):
+    with st.sidebar.status("Venatura Veritabanına Erişiliyor..."):
         if run_scraper():
-            st.sidebar.success("Scraping Complete!")
+            st.sidebar.success("Tarama Başarılı!")
             st.rerun()
 
 page = st.sidebar.radio("Navigation", ["Dashboard", "Venatura Lab", "Global Matrix"])
@@ -78,7 +90,6 @@ elif page == "Venatura Lab":
     st.title("🧪 Expert Analysis Lab")
     if not df.empty:
         selected_prod = st.selectbox("Select Product", df['Product_Name'].tolist())
-        # Analiz ve onaylama mantığı buraya gelecek
         st.info(f"Analyzing: {selected_prod}")
     else:
         st.warning("Please run the scraper first from the sidebar!")
