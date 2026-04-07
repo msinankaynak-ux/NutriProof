@@ -7,12 +7,13 @@ st.set_page_config(page_title="NutriProof Expert Panel", layout="wide")
 # Özel CSS ile Oxford Mavisi ve Gold Amber dokunuşu
 st.markdown("""
     <style>
-    .main { background-color: #00152E; color: #F8F9FA; }
+    .stApp { background-color: #00152E; color: #F8F9FA; }
     .stButton>button { background-color: #FFBF00; color: #002147; font-weight: bold; }
     h1, h2, h3 { color: #FFBF00 !important; font-family: 'Serif'; }
-    .stMetric { background-color: #002B5B; padding: 15px; border-radius: 10px; border-left: 5px solid #FFBF00; }
+    [data-testid="stMetricValue"] { color: #FFBF00 !important; }
+    [data-testid="stMetric"] { background-color: #002B5B; padding: 15px; border-radius: 10px; border-left: 5px solid #FFBF00; }
     </style>
-    """, unsafe_allow_view_allowed=True)
+    """, unsafe_allow_html=True)
 
 # 2. Sidebar (Sol Menü)
 st.sidebar.image("https://via.placeholder.com/150?text=NutriProof", width=100)
