@@ -3,7 +3,7 @@ from bs4 import BeautifulSoup
 import pandas as pd
 
 def get_venatura_data():
-    url = "https://venatura.co/urunler/" # Venatura'nın ana ürün listesi
+    url = "https://venatura.com.tr/urunler/" # Venatura'nın ana ürün listesi
     headers = {'User-Agent': 'NutriProof-Academic-Bot/1.0'}
     
     response = requests.get(url, headers=headers)
