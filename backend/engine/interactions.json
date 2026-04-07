@@ -1,0 +1,16 @@
+{
+  "interactions": [
+    {
+      "substance": "Iron (Demir)",
+      "conflicts_with": ["Thyroid Medications", "Calcium Supplements"],
+      "warning_level": "High",
+      "note": "Demir, tiroid ilaçlarının emilimini %50'den fazla azaltabilir. En az 4 saat ara bırakılmalıdır."
+    },
+    {
+      "substance": "Zinc (Çinko)",
+      "conflicts_with": ["Copper (Bakır)"],
+      "warning_level": "Medium",
+      "note": "Yüksek doz çinko uzun süreli kullanımda bakır eksikliğine yol açabilir."
+    }
+  ]
+}
