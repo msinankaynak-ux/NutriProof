@@ -1,0 +1,25 @@
+{
+  "product_id": "venatura-mag-bis-60",
+  "brand": "Venatura",
+  "name": "Magnezyum Bisglisinat",
+  "form": "Tablet",
+  "quantity": 60,
+  "barcode": "8681725021234",
+  "web_source": "https://venatura.co/urun/magnezyum-bisglisinat/",
+  "active_ingredients": [
+    {
+      "element": "Magnesium",
+      "salt_form": "Bisglycinate (Chelated)",
+      "amount_per_serving": 120,
+      "unit": "mg",
+      "bcs_class_guess": 1,
+      "spip_coeff_guess": 0.90
+    }
+  ],
+  "excipients": [
+    { "name": "Magnesium Stearate", "risk": "Low" },
+    { "name": "Polyvinylpyrrolidone", "risk": "Medium" }
+  ],
+  "technologies": ["Chelation Therapy"],
+  "status": "Pending Academic Review"
+}
