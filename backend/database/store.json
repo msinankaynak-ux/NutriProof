@@ -1,0 +1,11 @@
+{
+  "verified_products": [],
+  "pending_review": [
+    {
+      "id": "venatura-mag-01",
+      "brand": "Venatura",
+      "name": "Magnezyum Bisglisinat",
+      "status": "Awaiting_Professor_Approval"
+    }
+  ]
+}
